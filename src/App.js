@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./Layout";
+import Homepage from "./pages/Homepage";
+import Page404 from "./pages/Page404";
+import About from "./pages/About";
+import "./styles/style.css";
+import KanaMatch from "./pages/KanaMatch";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Homepage />}></Route>
+          <Route path="kanaMatch" element={<KanaMatch />}></Route>
+          <Route path="about" element={<About />}></Route>
+          <Route path="*" element={<Page404 />}></Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

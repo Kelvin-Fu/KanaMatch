@@ -1,0 +1,159 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+ul {
+  list-style-type: none;
+}
+
+nav {
+  background-color: #e4ffe2;
+}
+
+nav ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  margin-right: 0.5rem;
+}
+
+nav ul li {
+  padding: 0.3rem 0.5rem;
+}
+
+nav ul li a {
+  font-size: 1rem;
+}
+
+.footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 1rem;
+  background-color: #e4ffe2;
+  min-height: 5vh;
+}
+
+.topPart {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  padding: 0rem 2rem;
+  flex-wrap: wrap;
+}
+
+.question {
+  margin-top: 2rem;
+  background-color: #dfecbd;
+  display: inline-block;
+
+  height: 18rem;
+  min-width: 18rem;
+  border: 1px solid black;
+  border-radius: 15%;
+  line-height: 1;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.question p {
+  font-size: 8rem;
+}
+
+.answers {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.answers button {
+  padding: 1rem;
+  width: 8rem;
+  height: 8rem;
+  font-size: 300%;
+  margin: 0.6rem;
+  border: 3px solid #010101;
+  border-radius: 20%;
+}
+
+.answers button:hover {
+  background-color: aliceblue;
+}
+
+.elements {
+}
+.elements .Hearts {
+  display: flex;
+  flex-wrap: nowrap;
+  position: fixed;
+  left: 30px;
+  top: 24px;
+}
+.elements div img {
+  width: 25px;
+  margin: 0rem 0.2rem;
+  margin-top: 0.5rem;
+}
+.progress-container {
+  position: absolute;
+  top: 15px;
+  left: 150px;
+  min-width: 12rem;
+  background-color: #e0e0e0; /* Light grey background */
+  border-radius: 10px; /* Rounded corners */
+  padding: 1px;
+  box-shadow: inset 0px 0px 5px #000; /* Optional shadow for a 3D effect */
+  margin: 1rem 0rem;
+}
+.progress {
+  width: 50%; /* Change this width to represent progress percentage */
+  height: 24px; /* Height of the progress bar */
+  background-color: rgb(10, 153, 42); /* Color of the progress bar */
+  border-radius: 10px 0px 0px 10px; /*Rounded corners*/
+  transition: width 0.4s ease;
+}
+
+.progressNum {
+  position: absolute; /* Absolute positioning */
+  right: 10px; /* Adjust to position as needed */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust for vertical centering */
+  font-size: 14px; /* Adjust font size as needed */
+  color: #090909; /* Text color */
+}
+
+.counter {
+  color: white;
+  min-width: 10rem;
+  display: flex;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  border: 1px solid black;
+  border-radius: 15px;
+  background-color: black;
+  justify-content: center;
+}
+/*# sourceMappingURL=style.css.map */
