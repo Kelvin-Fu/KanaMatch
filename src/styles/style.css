@@ -8,7 +8,11 @@
 body {
   font-family: "Roboto", sans-serif;
 }
-
+.mainDiv {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 a {
   text-decoration: none;
   color: black;
@@ -53,25 +57,84 @@ nav ul li a {
   font-size: 1rem;
   background-color: #e4ffe2;
   min-height: 5vh;
+  margin-top: auto;
 }
 
 .topPart {
   display: flex;
-  justify-content: center;
-  flex-direction: row;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
   padding: 0rem 2rem;
-  flex-wrap: wrap;
 }
 
-.question {
-  margin-top: 2rem;
-  background-color: #dfecbd;
-  display: inline-block;
+.topPart .healthprogress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5em;
+}
+/* ----生命值---- 5.2em*/
+.healthprogress .Hearts {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0em 2em 0px 0px;
+}
+.healthprogress div img {
+  width: 25px;
+  margin: 0rem 0.2em;
+}
+/* ----生命值---- */
 
-  height: 18rem;
-  min-width: 18rem;
+/* ----進度條---- */
+.progress-container {
+  width: 14em;
+  height: 1.5em;
+  line-height: 1.5em;
+  border-radius: 0.3em;
+  background-color: rgba(173, 173, 173, 0.078);
+  overflow: hidden;
+  text-align: right;
+}
+
+.progress {
+  width: 0%;
+  height: 1.5em;
+  line-height: 1.5em;
+  background-color: rgb(10, 153, 42);
+  border-radius: 0%;
+  overflow: hidden;
+}
+
+.progressNum {
+  margin: -1.5em 0.3em 0px 0px;
+  color: rgb(128, 226, 126);
+}
+/* ----進度條---- */
+
+/* ----計時---- */
+.counter {
+  color: white;
+  padding: 0.5rem;
+  margin: 2vh 0px;
+  width: 37vh;
   border: 1px solid black;
-  border-radius: 15%;
+  font-size: 100%;
+  border-radius: 10px;
+  background-color: black;
+  text-align: center;
+}
+/* ----計時---- */
+
+/* ----問題---- */
+.question {
+  margin-top: 1em;
+  background-color: #dfecbd;
+  height: 37vh;
+  width: 37vh;
+  border: 1px solid black;
+  border-radius: 15px;
   line-height: 1;
   display: flex;
   flex-wrap: nowrap;
@@ -82,19 +145,19 @@ nav ul li a {
 .question p {
   font-size: 8rem;
 }
+/* ----問題---- */
 
 .answers {
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Creates 2 equal columns */
+  gap: 4vh;
 }
 .answers button {
   padding: 1rem;
-  width: 8rem;
-  height: 8rem;
+  width: 18vh;
+  height: 18vh;
   font-size: 300%;
-  margin: 0.6rem;
+
   border: 3px solid #010101;
   border-radius: 20%;
 }
@@ -103,57 +166,4 @@ nav ul li a {
   background-color: aliceblue;
 }
 
-.elements {
-}
-.elements .Hearts {
-  display: flex;
-  flex-wrap: nowrap;
-  position: fixed;
-  left: 30px;
-  top: 24px;
-}
-.elements div img {
-  width: 25px;
-  margin: 0rem 0.2rem;
-  margin-top: 0.5rem;
-}
-.progress-container {
-  position: absolute;
-  top: 15px;
-  left: 150px;
-  min-width: 12rem;
-  background-color: #e0e0e0; /* Light grey background */
-  border-radius: 10px; /* Rounded corners */
-  padding: 1px;
-  box-shadow: inset 0px 0px 5px #000; /* Optional shadow for a 3D effect */
-  margin: 1rem 0rem;
-}
-.progress {
-  width: 50%; /* Change this width to represent progress percentage */
-  height: 24px; /* Height of the progress bar */
-  background-color: rgb(10, 153, 42); /* Color of the progress bar */
-  border-radius: 10px 0px 0px 10px; /*Rounded corners*/
-  transition: width 0.4s ease;
-}
-
-.progressNum {
-  position: absolute; /* Absolute positioning */
-  right: 10px; /* Adjust to position as needed */
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%); /* Adjust for vertical centering */
-  font-size: 14px; /* Adjust font size as needed */
-  color: #090909; /* Text color */
-}
-
-.counter {
-  color: white;
-  min-width: 10rem;
-  display: flex;
-  padding: 0.5rem;
-  margin-top: 0.3rem;
-  border: 1px solid black;
-  border-radius: 15px;
-  background-color: black;
-  justify-content: center;
-}
 /*# sourceMappingURL=style.css.map */

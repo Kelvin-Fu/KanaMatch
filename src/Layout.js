@@ -3,7 +3,7 @@ import React from "react";
 import Footer from "./components/Footer";
 const Layout = () => {
   return (
-    <div>
+    <div className="mainDiv">
       <nav>
         <ul>
           <li>

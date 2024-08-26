@@ -659,33 +659,31 @@ const KanaMatch = () => {
   };
 
   return (
-    <div style={{ minHeight: "90vh" }}>
+    <div>
       <div className="topPart">
-        <div className="question">
-          <p>{currentQuestion}</p>
-        </div>
-        <div className="elements">
+        <div className="healthprogress">
           <Health health={health} />
           <div class="progress-container">
             <div className="progress" style={{ width: `${(progress * 100) / maxScore}%` }}></div>
             <div className="progressNum">{progress}</div>
           </div>
-
-          <Countdown timeLeft={timeLeft} setTimeLeft={setTimeLeft} />
         </div>
-      </div>
-
-      <div className="answers">
-        {randomAns.map((index, idx) => (
-          <button
-            key={idx}
-            onClick={() => {
-              checkAnswer(index);
-            }}
-          >
-            {getAnswerText(index)}
-          </button>
-        ))}
+        <div className="question">
+          <p>{currentQuestion}</p>
+        </div>
+        <Countdown timeLeft={timeLeft} setTimeLeft={setTimeLeft} />
+        <div className="answers">
+          {randomAns.map((index, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                checkAnswer(index);
+              }}
+            >
+              {getAnswerText(index)}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
