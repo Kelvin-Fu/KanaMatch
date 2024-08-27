@@ -1,15 +1,8 @@
 import React, { useEffect } from "react";
 
-const Countdown = ({ timeLeft, setTimeLeft }) => {
-  const formatTime = (time) => {
-    const minutes = String(Math.floor(time / 60000)).padStart(2, "0");
-    const seconds = String(Math.floor((time % 60000) / 1000)).padStart(2, "0");
-    const milliseconds = String(Math.floor((time % 1000) / 10)).padStart(2, "0");
-    return `${minutes}:${seconds}:${milliseconds}`;
-  };
-
+const Countdown = ({ timeLeft, setTimeLeft, formatTime, health, addSecond }) => {
   useEffect(() => {
-    if (timeLeft <= 0) return; // Exit if time runs out
+    if (timeLeft <= 0 || health === 0) return; // Exit if time runs out
 
     // Decrease timeLeft by 10 milliseconds
     const intervalId = setInterval(() => {
@@ -20,7 +13,12 @@ const Countdown = ({ timeLeft, setTimeLeft }) => {
     return () => clearInterval(intervalId);
   }, [timeLeft]);
 
-  return <div className="counter">{formatTime(timeLeft)}</div>;
+  return (
+    <div className={`counter`}>
+      <p className={`countdown ${timeLeft < 10250 ? "red-text blink" : ""}`}>{formatTime(timeLeft)}</p>
+      {addSecond && <p className="addSeconds">+3s</p>}
+    </div>
+  );
 };
 
 export default Countdown;

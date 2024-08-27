@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Countdown from "../components/Countdown";
 import Health from "../components/Health";
 const KanaMatch = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const questionBoxRef = useRef(null);
   const { options, gamemode } = location.state || {};
-
+  const answerRefs = useRef([]);
   //0-45 Basic, 46-70 dakuon , 71-103 Yoon
   const questionBank = [
     {
@@ -539,6 +541,8 @@ const KanaMatch = () => {
   const [randomNumbers, setRandomNumbers] = useState([]); //Random numbers array to decide which question to ask
   const [maxScore, setMaxScore] = useState(46);
   const [health, setHealth] = useState(3);
+  const [showPopup, setShowPopup] = useState(false);
+  const [addSecond, setAddSecond] = useState(false);
 
   const getRandomNumbers = (count, max) => {
     // Step 1: Create an array with numbers from 0 to max
@@ -569,8 +573,8 @@ const KanaMatch = () => {
     }
     return selectedNumbers;
   };
-  //generate random number array based on selected options and set MaxScore
-  useEffect(() => {
+
+  const generateRandomArray = () => {
     if (options[2] === -1 && options[3] === -1) {
       setRandomNumbers(getRandomNumbers(46, 45));
     } else if (options[2] === 1 && options[3] === 1) {
@@ -590,10 +594,17 @@ const KanaMatch = () => {
       setRandomNumbers(sumArr);
       setMaxScore(79);
     }
+  };
+  //generate random number array based on selected options and set MaxScore
+  useEffect(() => {
+    generateRandomArray();
   }, []);
 
   //Generate Question everytime progress +1
   useEffect(() => {
+    if (progress === maxScore) {
+      setShowPopup(true);
+    }
     if (randomNumbers.length > 0 && progress < randomNumbers.length) {
       const questionIndex = randomNumbers[progress];
       let kaToRo = true;
@@ -630,6 +641,13 @@ const KanaMatch = () => {
     }
   }, [randomNumbers, progress]);
 
+  useEffect(() => {
+    if (timeLeft <= 0 || health === 0) {
+      setShowPopup(true);
+      return;
+    }
+  }, [timeLeft, health]);
+
   //decides if its kana to romanji or romanji to kana
   const getAnswerText = (index) => {
     if (options[0] === -1 && options[1] === 1) {
@@ -645,16 +663,102 @@ const KanaMatch = () => {
     }
   };
 
+  const formatTime = (time) => {
+    const minutes = String(Math.floor(time / 60000)).padStart(2, "0");
+    const seconds = String(Math.floor((time % 60000) / 1000)).padStart(2, "0");
+    const milliseconds = String(Math.floor((time % 1000) / 10)).padStart(2, "0");
+    return `${minutes}:${seconds}:${milliseconds}`;
+  };
   //check if correct answer are selected
-  const checkAnswer = (ansIndex) => {
+  const checkAnswer = (ansIndex, e) => {
     if (ansIndex === randomNumbers[progress]) {
+      animateQuestionBoxToAnswer(ansIndex);
       setProgress((prevProgress) => prevProgress + 1);
       setTimeLeft(timeLeft + 3000);
+      setAddSecond(true);
+      setTimeout(() => {
+        setAddSecond(false);
+      }, 1000);
+      e.target.style.border = "3px solid green";
+      e.target.style.backgroundColor = "lightgreen";
+      const answerDivs = document.querySelectorAll(".answers button");
+      setTimeout(() => {
+        answerDivs.forEach((div) => {
+          div.style.border = "3px solid black";
+          div.style.backgroundColor = "";
+          div.style.color = "black";
+        });
+      }, 300);
     } else {
+      animateQuestionBoxToAnswer(ansIndex);
+      shake(ansIndex);
+      e.target.style.border = "3px solid red";
+      e.target.style.color = "red";
       if (health > 0) {
         setHealth(health - 1);
       }
-      //lose hearts
+    }
+  };
+
+  const shake = (index) => {
+    const answerBox = answerRefs.current[index];
+    answerBox.classList.add("shake");
+    setTimeout(() => {
+      answerBox.classList.remove("shake");
+    }, 500);
+  };
+
+  const animateQuestionBoxToAnswer = (answerIdx) => {
+    const questionBox = questionBoxRef.current;
+    const answerBox = answerRefs.current[answerIdx];
+
+    const questionRect = questionBox.getBoundingClientRect();
+    const answerRect = answerBox.getBoundingClientRect();
+
+    // Create clone
+    const clone = questionBox.cloneNode(true);
+    document.body.appendChild(clone);
+
+    // Set initial styles for clone
+    Object.assign(clone.style, {
+      position: "absolute",
+      top: `${questionRect.top}px`,
+      left: `${questionRect.left}px`,
+      width: `${questionRect.width}px`,
+      height: `${questionRect.height}px`,
+      margin: 0,
+      zIndex: 1000,
+      transition: "all 0.5s ease-in-out",
+    });
+
+    // Force reflow to ensure the transition will happen
+    clone.getBoundingClientRect();
+
+    // Set final styles for clone to animate
+    Object.assign(clone.style, {
+      top: `${answerRect.top}px`,
+      left: `${answerRect.left}px`,
+      width: `18vh`,
+      height: `18vh`,
+      opacity: 0,
+      transform: "scale(1)",
+    });
+
+    // Remove clone after animation
+    setTimeout(() => {
+      document.body.removeChild(clone);
+    }, 500);
+  };
+
+  const msgbox = () => {
+    if (timeLeft <= 0) {
+      return "Times Up! You've completed " + progress + " questions with " + health + " lifes remaining.";
+    } else if (health === 0) {
+      return "Game Over! You've completed " + progress + " questions with " + formatTime(timeLeft) + " time remaining";
+    } else if (progress === maxScore) {
+      return "Congratulations, You've completed All " + progress + " questions with " + formatTime(timeLeft) + " time remaining, good job!";
+    } else {
+      return "something went wrong";
     }
   };
 
@@ -663,21 +767,23 @@ const KanaMatch = () => {
       <div className="topPart">
         <div className="healthprogress">
           <Health health={health} />
-          <div class="progress-container">
+          <div className="progress-container">
             <div className="progress" style={{ width: `${(progress * 100) / maxScore}%` }}></div>
             <div className="progressNum">{progress}</div>
           </div>
         </div>
-        <div className="question">
+        <div className="question" ref={questionBoxRef}>
           <p>{currentQuestion}</p>
         </div>
-        <Countdown timeLeft={timeLeft} setTimeLeft={setTimeLeft} />
+        <Countdown timeLeft={timeLeft} setTimeLeft={setTimeLeft} formatTime={formatTime} addSecond={addSecond} health={health} />
         <div className="answers">
           {randomAns.map((index, idx) => (
             <button
               key={idx}
-              onClick={() => {
-                checkAnswer(index);
+              id={`answer-${index}`}
+              ref={(el) => (answerRefs.current[index] = el)}
+              onClick={(e) => {
+                checkAnswer(index, e);
               }}
             >
               {getAnswerText(index)}
@@ -685,6 +791,32 @@ const KanaMatch = () => {
           ))}
         </div>
       </div>
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup-box">
+            <h2>{msgbox()}</h2>
+            <button
+              onClick={() => {
+                setShowPopup(false);
+                setProgress(0);
+                generateRandomArray();
+                setTimeLeft(30000);
+                setHealth(3);
+              }}
+            >
+              Try Again
+            </button>
+            <button
+              onClick={() => {
+                setShowPopup(false);
+                navigate("/");
+              }}
+            >
+              Quit
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
