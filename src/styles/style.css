@@ -99,9 +99,7 @@ nav ul li a {
   background-color: #ecf6f8;
   border: 2px solid #5783db;
 }
-.gameOption button:hover {
-  background-color: #55c2da;
-}
+
 .gamemode button {
   height: 3vh;
   width: 8vh;
