@@ -9,9 +9,9 @@ const Layout = () => {
           <li>
             <Link to="/">Kana Match</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/about">More</Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
       <Outlet />

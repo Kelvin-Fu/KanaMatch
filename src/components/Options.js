@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 const Options = ({ options, setOptions }) => {
   const changeOption = (opt) => {
@@ -13,7 +13,7 @@ const Options = ({ options, setOptions }) => {
         onClick={() => {
           changeOption(1);
         }}
-        style={{ backgroundColor: options[0] === 1 ? "blue" : "gray" }}
+        style={{ backgroundColor: options[0] === 1 ? "#55c2da" : "" }}
       >
         Hiragana
       </button>
@@ -21,7 +21,7 @@ const Options = ({ options, setOptions }) => {
         onClick={() => {
           changeOption(2);
         }}
-        style={{ backgroundColor: options[1] === 1 ? "blue" : "gray" }}
+        style={{ backgroundColor: options[1] === 1 ? "#55c2da" : "" }}
       >
         Katakana
       </button>
@@ -29,7 +29,7 @@ const Options = ({ options, setOptions }) => {
         onClick={() => {
           changeOption(3);
         }}
-        style={{ backgroundColor: options[2] === 1 ? "blue" : "gray" }}
+        style={{ backgroundColor: options[2] === 1 ? "#55c2da" : "" }}
       >
         Dakuon
       </button>
@@ -37,7 +37,7 @@ const Options = ({ options, setOptions }) => {
         onClick={() => {
           changeOption(4);
         }}
-        style={{ backgroundColor: options[3] === 1 ? "blue" : "gray" }}
+        style={{ backgroundColor: options[3] === 1 ? "#55c2da" : "" }}
       >
         Yōon
       </button>

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Options from "../components/Options";
-
+import logo from "../images/logo.png";
 const Homepage = () => {
   const navigate = useNavigate();
   const handleStart = () => {
@@ -12,18 +12,23 @@ const Homepage = () => {
   let [gamemode, setGamemode] = useState(1);
 
   return (
-    <div style={{ minHeight: "86vh" }}>
-      <div className="demo">あ</div>
-      <div className="rightSide">
-        <Options options={options} setOptions={setOptions} />
-        <div className="gamemode">
-          <button onClick={() => setGamemode(1)}>あ ⟷ a</button>
-          <button onClick={() => setGamemode(2)}>あ → a</button>
-          <button onClick={() => setGamemode(3)}>あ ← a</button>
-        </div>
-        <div className="kanaMatch">
-          <button onClick={handleStart}>Start</button>
-        </div>
+    <div className="mainPage">
+      <img src={logo} alt="logo"></img>
+
+      <Options options={options} setOptions={setOptions} />
+      <div className="gamemode">
+        <button onClick={() => setGamemode(1)} style={{ backgroundColor: gamemode === 1 ? "orange" : "white" }}>
+          あ ⟷ a
+        </button>
+        <button onClick={() => setGamemode(2)} style={{ backgroundColor: gamemode === 2 ? "orange" : "white" }}>
+          あ → a
+        </button>
+        <button onClick={() => setGamemode(3)} style={{ backgroundColor: gamemode === 3 ? "orange" : "white" }}>
+          あ ← a
+        </button>
+      </div>
+      <div className="kanaMatch">
+        <button onClick={handleStart}>Start</button>
       </div>
     </div>
   );

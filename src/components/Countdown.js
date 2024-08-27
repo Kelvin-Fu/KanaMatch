@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 
-const Countdown = ({ timeLeft, setTimeLeft, formatTime, health, addSecond }) => {
+const Countdown = ({ timeLeft, setTimeLeft, formatTime, health, addSecond, progress, maxScore }) => {
   useEffect(() => {
-    if (timeLeft <= 0 || health === 0) return; // Exit if time runs out
+    if (timeLeft <= 0 || health === 0 || progress === maxScore) return; // Exit if time runs out
 
     // Decrease timeLeft by 10 milliseconds
     const intervalId = setInterval(() => {
