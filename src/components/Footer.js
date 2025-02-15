@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div className="footer">
       <kbd>
-        2024&copy; <span></span> Kelvin Fu. All Rights Reserved.{" "}
+        2025&copy; <span></span> Kelvin Fu. All Rights Reserved.{" "}
       </kbd>
     </div>
   );
