@@ -2,16 +2,21 @@ import React, { useEffect } from "react";
 
 const Countdown = ({ timeLeft, setTimeLeft, formatTime, health, addSecond, progress, maxScore }) => {
   useEffect(() => {
-    if (timeLeft <= 0 || health === 0 || progress === maxScore) return; // Exit if time runs out
+    if (timeLeft <= 0 || health === 0 || progress === maxScore) return;
 
-    // Decrease timeLeft by 10 milliseconds
     const intervalId = setInterval(() => {
-      setTimeLeft((prevTimeLeft) => prevTimeLeft - 10);
+      setTimeLeft((prevTimeLeft) => {
+        if (prevTimeLeft <= 10) {
+          clearInterval(intervalId);
+          return 0;
+        }
+        return prevTimeLeft - 10;
+      });
     }, 10);
 
-    // Clear the interval on component unmount or when timeLeft changes
     return () => clearInterval(intervalId);
-  }, [timeLeft]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [health, progress, maxScore, setTimeLeft]);
 
   return (
     <div className={`counter`}>

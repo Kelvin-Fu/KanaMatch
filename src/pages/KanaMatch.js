@@ -9,8 +9,16 @@ const KanaMatch = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const questionBoxRef = useRef(null);
-  const { options, gamemode } = location.state || {};
   const answerRefs = useRef([]);
+  
+  // Guard against direct navigation without state
+  const { options, gamemode } = location.state || {};
+  
+  React.useEffect(() => {
+    if (!options || !gamemode) {
+      navigate('/');
+    }
+  }, [options, gamemode, navigate]);
 
   const [progress, setProgress] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(null);
@@ -24,21 +32,8 @@ const KanaMatch = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [addSecond, setAddSecond] = useState(false);
 
-  const getRandomNumbers = (count, max) => {
-    const numbers = Array.from({ length: max + 1 }, (_, index) => index);
-
-    // Step 2: Shuffle the array using Fisher-Yates algorithm
-    for (let i = numbers.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [numbers[i], numbers[j]] = [numbers[j], numbers[i]]; // Swap elements
-    }
-
-    // Step 3: Select the first 'count' numbers from the shuffled array
-    return numbers.slice(0, count);
-  };
-
-  const getRandomAnswer = (count, max, ans) => {
-    const numbers = Array.from({ length: max + 1 }, (_, index) => index);
+  const getRandomAnswer = (count, max, ans, min = 0) => {
+    const numbers = Array.from({ length: max - min + 1 }, (_, index) => index + min);
     const filteredNumbers = numbers.filter((num) => num !== ans);
     for (let i = filteredNumbers.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -54,27 +49,45 @@ const KanaMatch = () => {
   };
 
   const generateRandomArray = () => {
-    if (options[2] === -1 && options[3] === -1) {
-      setRandomNumbers(getRandomNumbers(46, 45));
-    } else if (options[2] === 1 && options[3] === 1) {
-      setRandomNumbers(getRandomNumbers(104, 103));
-      setMaxScore(104);
-    } else if (options[2] === 1 && options[3] === -1) {
-      setRandomNumbers(getRandomNumbers(71, 70));
-      setMaxScore(71);
-    } else if (options[2] === -1 && options[3] === 1) {
-      let firstHalf = getRandomNumbers(46, 45);
-      let secondHalf = getRandomNumbers(33, 32).map((value) => (value += 71));
-      let sumArr = firstHalf.concat(secondHalf);
-      for (let i = sumArr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [sumArr[i], sumArr[j]] = [sumArr[j], sumArr[i]]; // Swap elements
+    // Options: [Hiragana, Katakana, Dakuon, Yōon]
+    // Question bank ranges: Basic (0-45), Dakuon (46-70), Yōon (71-103)
+    let questionIndices = [];
+    
+    // Determine which categories to include
+    const includeDakuon = options[2] === 1;
+    const includeYoon = options[3] === 1;
+    
+    // If neither Dakuon nor Yōon is selected, use basic kana (0-45)
+    // If only Dakuon, use only Dakuon (46-70)
+    // If only Yōon, use only Yōon (71-103)
+    // If both, combine them
+    // If Dakuon/Yōon with neither Hira/Kata explicitly selected, still show whichever categories are picked
+    
+    if (!includeDakuon && !includeYoon) {
+      // Only basic kana
+      for (let i = 0; i <= 45; i++) questionIndices.push(i);
+    } else {
+      if (includeDakuon) {
+        // Dakuon: indices 46-70
+        for (let i = 46; i <= 70; i++) questionIndices.push(i);
       }
-      setRandomNumbers(sumArr);
-      setMaxScore(79);
+      if (includeYoon) {
+        // Yōon: indices 71-103
+        for (let i = 71; i <= 103; i++) questionIndices.push(i);
+      }
     }
+    
+    // Shuffle the array using Fisher-Yates algorithm
+    for (let i = questionIndices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [questionIndices[i], questionIndices[j]] = [questionIndices[j], questionIndices[i]];
+    }
+    
+    setRandomNumbers(questionIndices);
+    setMaxScore(questionIndices.length);
   };
   //generate random number array based on selected options and set MaxScore
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     generateRandomArray();
   }, []);
@@ -99,6 +112,7 @@ const KanaMatch = () => {
       if (questionIndex < questionBank.length) {
         //decide hiragana or katakana or romanji as question based on selected options
         if (kaToRo) {
+          // options[0] = Hiragana, options[1] = Katakana
           if (options[0] === -1 && options[1] === 1) {
             setCurrentQuestion(questionBank[questionIndex].Katakana);
           } else if (options[0] === 1 && options[1] === 1) {
@@ -106,18 +120,23 @@ const KanaMatch = () => {
             setHiraKana(randomNum);
             randomNum === 1 ? setCurrentQuestion(questionBank[questionIndex].Hiragana) : setCurrentQuestion(questionBank[questionIndex].Katakana);
           } else {
+            // Default to Hiragana if nothing selected or only Hiragana
             setCurrentQuestion(questionBank[questionIndex].Hiragana);
           }
         } else {
           setCurrentQuestion(questionBank[questionIndex].Romanji);
         }
 
-        const randomAnswer = getRandomAnswer(4, 45, questionIndex);
+        // Get answer options from appropriate range based on question category
+        const maxRange = questionIndex < 46 ? 45 : (questionIndex < 71 ? 70 : 103);
+        const minRange = questionIndex < 46 ? 0 : (questionIndex < 71 ? 46 : 71);
+        const randomAnswer = getRandomAnswer(4, maxRange, questionIndex, minRange);
         setRandomAns(randomAnswer);
       } else {
         console.error("Question index is out of range");
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [randomNumbers, progress]);
 
   useEffect(() => {
@@ -129,6 +148,7 @@ const KanaMatch = () => {
 
   //decides if its kana to romanji or romanji to kana
   const getAnswerText = (index) => {
+    // options[0] = Hiragana, options[1] = Katakana
     if (options[0] === -1 && options[1] === 1) {
       return kanaToRo ? questionBank[index].Romanji : questionBank[index].Katakana;
     } else if (options[0] === 1 && options[1] === 1) {
@@ -138,6 +158,7 @@ const KanaMatch = () => {
         return hiraKana === 0 ? questionBank[index].Hiragana : questionBank[index].Katakana;
       }
     } else {
+      // Default to Hiragana
       return kanaToRo ? questionBank[index].Romanji : questionBank[index].Hiragana;
     }
   };
@@ -150,18 +171,22 @@ const KanaMatch = () => {
   };
 
   const reset = () => {
-    const answerDivs = document.querySelectorAll(".answers button");
     setTimeout(() => {
-      answerDivs.forEach((div) => {
-        div.style.border = "3px solid black";
-        div.style.backgroundColor = "";
-        div.style.color = "black";
+      Object.values(answerRefs.current).forEach((el) => {
+        if (el) {
+          el.style.border = "3px solid black";
+          el.style.backgroundColor = "";
+          el.style.color = "black";
+        }
       });
     }, 300);
   };
 
   //check if correct answer are selected
   const checkAnswer = (ansIndex, e) => {
+    // Prevent interaction if game is over
+    if (timeLeft <= 0 || health <= 0) return;
+
     if (ansIndex === randomNumbers[progress]) {
       animateQuestionBoxToAnswer(ansIndex);
       setProgress((prevProgress) => prevProgress + 1);
@@ -291,20 +316,20 @@ const KanaMatch = () => {
           <p>{currentQuestion}</p>
         </div>
         <Countdown timeLeft={timeLeft} setTimeLeft={setTimeLeft} formatTime={formatTime} addSecond={addSecond} health={health} progress={progress} maxScore={maxScore} />
-        <div className="answers">
-          {randomAns.map((index, idx) => (
-            <button
-              key={idx}
-              id={`answer-${index}`}
-              ref={(el) => (answerRefs.current[index] = el)}
-              onClick={(e) => {
-                checkAnswer(index, e);
-              }}
-            >
-              {getAnswerText(index)}
-            </button>
-          ))}
-        </div>
+      </div>
+      <div className="answers">
+        {randomAns.map((index, idx) => (
+          <button
+            key={idx}
+            id={`answer-${index}`}
+            ref={(el) => (answerRefs.current[index] = el)}
+            onClick={(e) => {
+              checkAnswer(index, e);
+            }}
+          >
+            {getAnswerText(index)}
+          </button>
+        ))}
       </div>
       {showPopup && (
         <div className="popup-overlay">

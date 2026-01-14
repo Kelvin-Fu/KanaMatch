@@ -1,3 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Poppins:wght@400;500;600&display=swap');
+
+:root {
+  --primary: #0d9488;
+  --primary-light: #2dd4bf;
+  --primary-dark: #0f766e;
+  --accent: #f43f5e;
+  --surface: rgba(255, 255, 255, 0.9);
+  --text-main: #334155;
+  --text-light: #64748b;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,325 +23,353 @@
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: "Poppins", sans-serif;
   background-image: url("../images/koybg.jpg");
   background-size: cover;
+  background-attachment: fixed; /* Added fixed attachment for better scrolling */
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow: hidden; /* Prevent scrollbars from animations */
 }
+
 .mainDiv {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
 }
+
 a {
   text-decoration: none;
-  color: black;
+  color: var(--text-main);
 }
 
 ul {
   list-style-type: none;
 }
 
+/* Navigation */
 nav ul {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
   justify-content: flex-end;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
+  padding-top: 1rem;
 }
 
 nav ul li {
-  padding: 0.3rem 0.5rem;
+  padding: 0.5rem 1rem;
 }
 
 nav ul li a {
   font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-light);
+  transition: color 0.2s;
+}
+
+nav ul li a:hover {
+  color: var(--primary);
 }
 
 .footer {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
+  color: var(--text-light);
   height: 4vh;
   margin-top: auto;
+  padding-bottom: 1rem;
 }
-/* main page */
+
+/* Main Page */
 .mainPage {
   display: flex;
-  margin-top: 20vh;
+  margin-top: 10vh;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 2rem;
 }
 
-.demo {
-  margin-top: 0.5em;
-  background-color: #cffdbc;
-  height: 37vh;
-  width: 37vh;
-  border: 1px solid black;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
-  line-height: 1;
+.mainPage img {
+  max-width: 200px;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+.gameOption, .gamemode {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  gap: 1rem;
 }
 
-.demo p {
-  font-size: 8rem;
-  white-space: nowrap;
+button {
+  border: none;
+  outline: none;
+  font-family: inherit;
 }
 
-.gameOption {
-  margin-top: 1rem;
-  display: flex;
-  flex-wrap: nowrap;
+.gameOption button, .gamemode button {
+  padding: 0.75rem 1.5rem;
+  min-width: 100px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-light);
+  background: white; /* Solid white for unselected */
+  border: 2px solid transparent;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
 }
 
-.gameOption button {
-  height: 3vh;
-  width: 8vh;
-  margin: 0.7rem;
-  color: black;
-  background-color: #ecf6f8;
-  border: 2px solid #5783db;
+.gameOption button:hover, .gamemode button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: var(--primary);
+  background: white;
 }
 
 .gamemode button {
-  height: 3vh;
-  width: 8vh;
-  margin: 0.7rem;
-  border: 2px solid rgb(227, 155, 23);
+    font-family: "M PLUS Rounded 1c", sans-serif;
+}
+
+/* Selected States - Matching User Reference */
+.gameOption button[style*="#55c2da"] {
+  background-color: #55c2da !important; /* Solid teal */
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(85, 194, 218, 0.4);
+  transform: translateY(-2px);
+}
+
+.gamemode button[style*="orange"] {
+  background-color: #f5a030 !important; /* Solid orange */
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(245, 160, 48, 0.4);
+  transform: translateY(-2px);
 }
 
 .kanaMatch button {
-  height: 4vh;
-  width: 10vh;
-  margin-top: 0.7rem;
-  background-color: #5adbb5;
-  border: 2px solid #5dbea3;
-  border-radius: 10px;
+  margin-top: 1rem;
+  padding: 1rem 3rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  background-color: #5adbb5; /* Solid green start button */
+  background-image: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(90, 219, 181, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .kanaMatch button:hover {
-  background-color: #7fdabe;
+  transform: translateY(-4px);
+  background-color: #6ee8c3;
+  box-shadow: 0 8px 25px rgba(90, 219, 181, 0.5);
+  filter: brightness(1.05);
 }
 
+.kanaMatch button:active {
+  transform: translateY(-1px);
+}
+
+/* Game Interface */
 .topPart {
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
   align-items: center;
-  height: 100%;
-  padding: 0rem 2rem;
+  gap: 0.5rem; /* Reduced gap from 1rem */
+  padding: 0.5rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.topPart .healthprogress {
+.healthprogress {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-top: 0.5em;
+  justify-content: space-between;
+  width: 38vh; /* Match question box width */
+  margin: 0 auto;
+  padding: 0;
 }
-/* ----生命值---- 5.2em*/
+
 .healthprogress .Hearts {
   display: flex;
-  flex-wrap: nowrap;
-  margin: 0em 2em 0px 0px;
+  gap: 0.5rem;
 }
-.healthprogress div img {
-  width: 25px;
-  margin: 0rem 0.2em;
-}
-/* ----生命值---- */
 
-/* ----進度條---- */
+.healthprogress div img {
+  width: 24px; /* Slightly smaller hearts */
+  height: 24px;
+  filter: drop-shadow(0 2px 4px rgba(244, 63, 94, 0.3));
+}
+
 .progress-container {
-  width: 14em;
-  height: 1.5em;
-  line-height: 1.5em;
-  border-radius: 0.3em;
-  background-color: rgba(135, 135, 135, 0.689);
+  width: 180px; /* Slightly smaller progress bar */
+  height: 1rem;
+  background-color: #e2e8f0;
+  border-radius: 1rem;
   overflow: hidden;
-  text-align: right;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .progress {
-  width: 0%;
-  height: 1.5em;
-  line-height: 1.5em;
-  background-color: rgb(10, 153, 42);
-  border-radius: 0%;
-  overflow: hidden;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+  border-radius: 1rem;
+  transition: width 0.3s ease;
 }
 
 .progressNum {
-  margin: -1.5em 0.3em 0px 0px;
-  color: rgb(128, 226, 126);
-}
-/* ----進度條---- */
-
-/* ----計時---- */
-.counter {
-  color: rgb(95, 231, 111);
-  padding: 0.5rem;
-  margin: 1.25vh 0px;
-  width: 37vh;
-
-  border: 1px solid black;
-  font-size: 100%;
-  border-radius: 10px;
-  background-color: black;
-  position: relative;
-  display: flex;
-  justify-content: center;
-}
-.addSeconds {
-  position: absolute;
-  right: 10px;
+  display: none; /* Hide number inside bar, usually redundant */
 }
 
-.red-text {
-  color: red;
-  transition: transform 0.2s ease-in-out;
-}
-
-.blink {
-  animation: blink-animation 1.3s linear infinite;
-}
-
-@keyframes blink-animation {
-  0%,
-  20% {
-    opacity: 1;
-  }
-  20%,
-  25% {
-    opacity: 0;
-  }
-  25%,
-  100% {
-    opacity: 1;
-  }
-}
-
-/* ----計時---- */
-
-/* ----問題---- */
+/* Question Card */
 .question {
-  margin-top: 0.5em;
-  background-color: #f0fff2;
-  height: 37vh;
-  width: 37vh;
-  border: 1px solid black;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
-  line-height: 1;
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  height: 38vh;
+  width: 38vh; /* Flexible square question box */
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
   display: flex;
-  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
+  border: 1px solid rgba(255,255,255,0.5);
 }
 
 .question p {
-  font-size: 8rem;
-  font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro";
-  white-space: nowrap;
+  font-size: 5rem; /* Reduced font size */
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-weight: 800;
+  color: var(--text-main);
 }
-/* ----問題---- */
 
+/* Timer - full width bar like original */
+.counter {
+  background: #2d4a5e; /* Dark teal/blue like original */
+  color: #5cd9a8; /* Green timer text */
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-family: monospace;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38vh; /* Same as question box */
+  margin: 0.25rem auto;
+  position: relative;
+}
+
+.addSeconds {
+  position: absolute;
+  right: -40px;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+/* Answers Grid - matches question box width */
 .answers {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Creates 2 equal columns */
-  gap: 2vh;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  width: 38vh; /* Same width as question box */
+  margin: 0.25rem auto 0;
 }
+
 .answers button {
-  padding: 1rem;
-  width: 18vh;
-  height: 18vh;
-  font-size: 300%;
-  white-space: nowrap;
-  border: 3px solid rgb(0, 0, 0);
-  border-radius: 20%;
-  font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro";
+  width: 100%;
+  height: 18vh; /* Flexible height */
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  font-size: 2.5rem;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-weight: 700;
+  color: var(--text-main);
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s ease;
+  border: 3px solid #a0b4c0; /* Visible border like original */
+  cursor: pointer;
 }
 
 .answers button:hover {
-  background-color: aliceblue;
-}
-
-@keyframes shake {
-  0% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-5px);
-  }
-  50% {
-    transform: translateX(5px);
-  }
-  75% {
-    transform: translateX(-5px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-light);
 }
 
 .shake {
-  animation: shake 0.3s; /* Adjust the duration as needed */
+  animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
 }
 
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Popup */
 .popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Transparent black background */
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
 }
 
-/* Style for the popup box */
 .popup-box {
   background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  text-align: center;
+  padding: 2.5rem;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 400px;
+  width: 90%;
+}
+
+.popup-box h1 {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+}
+
+.popup-box p {
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
 }
 
 .popup-box button {
-  margin-top: 10px;
-  padding: 8px 16px;
-  border: none;
-  background-color: #007bff;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 8px;
+  background-color: var(--primary);
   color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-right: 15px;
+  margin: 0.5rem;
 }
 
-.popup-box button:hover {
-  background-color: #0056b3;
-}
-.popup-box div h1 {
-  margin-bottom: 0.3em;
+.popup-box button[style*="rgb(210, 60, 60)"] {
+  background-color: #ef4444 !important;
 }
 
-.popup-box div p {
-  margin-top: 0.5em;
+/* 404 Page */
+.page404 h1 {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-
-/*# sourceMappingURL=style.css.map */

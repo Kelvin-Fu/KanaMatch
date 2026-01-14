@@ -5,7 +5,6 @@ const Options = ({ options, setOptions }) => {
     let newOptions = [...options];
     newOptions[opt - 1] *= -1;
     setOptions(newOptions);
-    console.log(newOptions);
   };
   return (
     <div className="gameOption">

@@ -8,6 +8,8 @@ const Homepage = () => {
     navigate("/kanaMatch", { state: { options: options, gamemode: gamemode } });
   };
 
+  // Options: [Hiragana, Katakana, Dakuon, Yōon]
+  // 1 = selected, -1 = not selected
   let [options, setOptions] = useState([1, -1, -1, -1]);
   let [gamemode, setGamemode] = useState(1);
 
